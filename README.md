@@ -18,6 +18,12 @@ It fetches, saves, and analyzes the content of a website and its associated asse
 
 
 
+I am still working on fixing the installing process. 
+
+The easies way right now is to install open-interpreter how it is intended, via pip install open-interpreter, and then exchanging the interpreter folder in it with the one from this repository. But thats not really pretty and shouldn't stay that way.
+
+
+
 General Open-Interpreter ReadMe:
 
 
