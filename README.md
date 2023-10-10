@@ -1,9 +1,15 @@
 Modified Version of the Code Interpreter, to autonomously solve hack-the-box ctf challenges.
+
 The Base of open-interpreter enables Chat-GPT or local LLM's to take over the local terminal on a machine, and thus execute shell commands or execute code (python, java...).
+
 Combined with running this on a kali linux machine, chat-gpt has the ability to auntonomously connect to a hack-the-box machine, and perform basic operations in the field of penetration testing.
+
 Via "export OPENAI_API_KEY=[api-key]" the api key can be set
+
 And via e.g. "interpreter --model gpt-3.5-turbo -y -i 10.10.11.221" The Machine on ip-address 10.10.11.221 can be targeted using the gpt-3.5.-turbo model
-Chat-GPT is also enhanced in this configuration via a custom function called "fetch-website", that fetches, savees, and analyzes the content of a website and its associated assets (like CSS and JS files), while also generating reports about the potential security relevance of the content based on hypothetical hack-the-box Capture The Flag (CTF) challenges, via another independent chat-gpt api call for each file that needs to be analyzed. 
+
+Chat-GPT is also enhanced in this configuration via a custom function called "fetch-website". 
+It fetches, saves, and analyzes the content of a website and its associated assets (like CSS and JS files), while also generating reports about the potential security relevance of the content based on hypothetical hack-the-box Capture The Flag (CTF) challenges, via another independent chat-gpt api call for each file that needs to be analyzed. This allows the operating LLM, to focus on the most relevant data and assuring it keeps track of its main goal.
 
 
 
