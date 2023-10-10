@@ -4,7 +4,7 @@ Modified Version of the Code Interpreter, to autonomously solve hack-the-box ctf
 The Base of open-interpreter enables Chat-GPT or local LLM's to take over the local terminal on a machine, and thus execute shell commands or execute code (python, java...).
 
 
-Combined with running this on a kali linux machine, chat-gpt has the ability to auntonomously connect to a hack-the-box machine, and perform basic operations in the field of penetration testing.
+An adjusted version of this, in combination with running on a kali linux machine, chat-gpt has the ability to auntonomously connect to a hack-the-box machine, perform reconnaissance using the known preinstalled tools and also try and exploit vulnerabilities.  
 
 
 Via "export OPENAI_API_KEY=[api-key]" the api key can be set
