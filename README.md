@@ -1,6 +1,6 @@
 Modified Version of the Code Interpreter, to autonomously solve hack-the-box ctf challenges.
 
-[![Example_Video](https://img.youtube.com/vi/watch?v=5tQ9wEdutAE&ab_channel=Marian/0.jpg)](https://www.youtube.com/watch?v=5tQ9wEdutAE&ab_channel=Marian)
+[![Example_Video](https://img.youtube.com/vi/watch?v=5tQ9wEdutAE&ab_channel=Marian/0.jpg)](https://www.youtube.com/watch?v=5tQ9wEdutAE&ab_channel=Marian)  Here an exaple of how it usually looks like in this stage of development. Starts off quite good, but then eventually gets stuck because it misses the key part of the solution, due to an error in the code it tries to execute and thus discards the correct approach.
 
 
 The Base of open-interpreter enables Chat-GPT or local LLM's to take over the local terminal on a machine, and thus execute shell commands or execute code (python, java...).
