@@ -10,7 +10,7 @@ Combined with running this on a kali linux machine, chat-gpt has the ability to 
 Via "export OPENAI_API_KEY=[api-key]" the api key can be set
 
 
-And via e.g. "interpreter --model gpt-3.5-turbo -y -i 10.10.11.221" The Machine on ip-address 10.10.11.221 can be targeted using the gpt-3.5.-turbo model
+And via e.g. "interpreter --model gpt-3.5-turbo -y -i 10.10.11.221" The Machine on ip-address 10.10.11.221 can be targeted using the gpt-3.5.-turbo model. Not defining the model, defaults to chat-gpt4, which is a lot more powerful, but also costly.
 
 
 Chat-GPT is also enhanced in this configuration via a custom function called "fetch-website". 
