@@ -3,9 +3,11 @@ from ..utils.merge_deltas import merge_deltas
 from ..utils.get_user_info_string import get_user_info_string
 from ..utils.display_markdown_message import display_markdown_message
 from ..rag.get_relevant_procedures import get_relevant_procedures
-from ..utils.truncate_output import truncate_output
+from ..utils.truncate_output import truncate_output#
 import traceback
 import litellm
+import re
+
 
 def respond(interpreter):
     """
@@ -21,7 +23,6 @@ def respond(interpreter):
         
         # Open Procedures is an open-source database of tiny, up-to-date coding tutorials.
         # We can query it semantically and append relevant tutorials/procedures to our system message
-        get_relevant_procedures(interpreter.messages[-2:])
         if not interpreter.local:
             try:
                 system_message += "\n\n" + get_relevant_procedures(interpreter.messages[-2:])
@@ -76,13 +77,14 @@ def respond(interpreter):
         except Exception as e:
             if 'auth' in str(e).lower() or 'api key' in str(e).lower():
                 output = traceback.format_exc()
-                raise Exception(f"{output}\n\nThere might be an issue with your API key(s).\n\nTo reset your API key (we'll use OPENAI_API_KEY for this example, but you may need to reset your ANTHROPIC_API_KEY, HUGGINGFACE_API_KEY, etc):\n        Mac/Linux: 'export OPENAI_API_KEY=your-key-here',\n        Windows: 'setx OPENAI_API_KEY your-key-here' then restart terminal.\n\n")
+                raise Exception(f"{output}\n\nThere might be an issue with your API key(s).\n\nTo reset your OPENAI_API_KEY (for example):\n        Mac/Linux: 'export OPENAI_API_KEY=your-key-here',\n        Windows: 'setx OPENAI_API_KEY your-key-here' then restart terminal.\n\n")
             else:
                 raise
         
         
-        
-        ### RUN CODE (if it's there) ###
+
+
+        ## RUN CODE (if it's there) ###
 
         if "code" in interpreter.messages[-1]:
             
@@ -133,6 +135,27 @@ def respond(interpreter):
 
             yield {"end_of_execution": True}
 
+        if "ip_address" in interpreter.messages[-1]:
+                mess = "The Website got scraped. A new Directory was created with its content in your working directory, called website. You can now analyze its content. Start with the files, that look the most promising. Files with multiple parts were to big for you to process at once. Look at those last."
+                print(mess)
+                yield mess
+                output = mess
+
+                # Truncate output
+                output = truncate_output(output, interpreter.max_output)
+
+                interpreter.messages[-1]["output"] = output.strip()
+
+        # if interpreter.messages[-1] is not None and "ip_address" in interpreter.messages[-1]:
+        #     print("hi")
+        #     try:
+        #         output = interpreter.messages[-1]["output"]
+        #         output += str("The Website was scraped and is now accessable in your working directory. Take a look at it.")
+        #         print("Output: ",output)
+        #         yield {"output": output.strip()}
+        #         interpreter.messages[-1]["output"] = output.strip()
+        #     except:
+        #         pass
         else:
             # Doesn't want to run code. We're done
             break
