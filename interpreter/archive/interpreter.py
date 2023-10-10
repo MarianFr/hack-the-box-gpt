@@ -401,8 +401,11 @@ class Interpreter:
       # If it wasn't, we start an interactive chat
       while True:
         try:
-          user_input = input("> ").strip()
+            user_input = "keep going autonomously. Think about runtimes and potential output size of every code execution. If it might exceed 16000 characters, adjust accordingly."
+            print("> " + user_input)  # Optionally print the auto-input for user visibility
         except EOFError:
+        #   user_input = input("> ").strip()
+        # except EOFError:
           break
         except KeyboardInterrupt:
           print()  # Aesthetic choice

@@ -8,25 +8,13 @@ from .components.message_block import MessageBlock
 from .magic_commands import handle_magic_command
 from ..utils.display_markdown_message import display_markdown_message
 from ..utils.truncate_output import truncate_output
-from ..utils.scan_code import scan_code
-
 
 def terminal_interface(interpreter, message):
     if not interpreter.auto_run:
-        interpreter_intro_message = [
-            "**Open Interpreter** will require approval before running code."
-        ]
+        display_markdown_message("""**Open Interpreter** will require approval before running code. Use `interpreter -y` to bypass this.
 
-        if interpreter.safe_mode != "off":
-            interpreter_intro_message.append(f"**Safe Mode**: {interpreter.safe_mode}")
-        else:
-            interpreter_intro_message.append(
-                "Use `interpreter -y` to bypass this."
-            )
-
-        interpreter_intro_message.append("Press `CTRL-C` to exit.")
-
-        display_markdown_message("\n\n".join(interpreter_intro_message))
+        Press `CTRL-C` to exit.
+        """)
     
     active_block = None
 
@@ -35,12 +23,34 @@ def terminal_interface(interpreter, message):
     else:
         interactive = True
 
+    i = 0
+
     while True:
         try:
-            if interactive:
-                message = input("> ").strip()
+            if interactive: #User-Message
+                #message = input("> ").strip()
+                if i == 0:
+                    if interpreter.ip:
+                            print(f"Using IP Address: {interpreter.ip}")
+                            message = (f"I want you to solve a hack the box challenge for me, located at ip: {interpreter.ip}, "
+                                    "start with writing a general step by step guide to reach the goal. "
+                                    "fetching the website found on the ip might be a good start. "
+                                    "The end goal of a hack the box challenge is to gain root user privileges and retrieve the flag. "
+                                    "This usually takes a lot of steps in between, so don't try and solve this on the first go. "
+                                    "In small steps, try to get closer towards the goal. "
+                                    "Also, think of the fact that websites in hack the box always have to be redirected to the correct "
+                                    "ip address of the machine before they can be accessed.")
+                    else:
+                        print("No ip specified. Use -i [ip-address] to specify an ip")
+                        message = ("Do nothing")
+                    i += 1
+                else:
+                    message = "Recap your plan to solve this from start to finish, really briefly, just keywords. Then just keep going autonomously with what you had in mind. Execute at least one step, before consulting me again."
+                    #message = "Recap your plan to solve this from start to finish, and keep going autonomously with what you hav in mind and start executing your code. Think about runtimes and potential output size of every code execution. If it might exceed 16000 characters, adjust accordingly. For websites also think of dns resolution. If a keyboard interruption happened, try something else. A moved premanently means you have to redirect the web address to the ip address of the machine. Only use the ssh connection if you know an acutal username and password, found somewhere else on the machine. The website found on port 80 is already downloaded, by curling everything that is possible to find on it, and saving it in the website direcory in your working directory. Analyzing its content and its relevance to the ctf is still your responsebility."
+                print(message)  # Optionally print the auto-input for user visibility
         except KeyboardInterrupt:
             # Exit gracefully
+            interactive = False # mine
             break
 
         if message.startswith("%") and interactive:
@@ -98,26 +108,6 @@ def terminal_interface(interpreter, message):
 
                         # End the active block so you can run input() below it
                         active_block.end()
-
-                        should_scan_code = False
-
-                        if not interpreter.safe_mode == "off":
-                            if interpreter.safe_mode == "auto":
-                                should_scan_code = True
-                            elif interpreter.safe_mode == 'ask':
-                                response = input("  Would you like to scan this code? (y/n)\n\n  ")
-                                print("")  # <- Aesthetic choice
-
-                                if response.strip().lower() == "y":
-                                    should_scan_code = True
-
-                        if should_scan_code:
-                            # Get code language and actual code from the chunk
-                            # We need to give these to semgrep when we start our scan
-                            language = chunk["executing"]["language"]
-                            code = chunk["executing"]["code"]
-
-                            scan_code(code, language, interpreter)
 
                         response = input("  Would you like to run this code? (y/n)\n\n  ")
                         print("")  # <- Aesthetic choice
